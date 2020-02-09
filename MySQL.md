@@ -193,7 +193,13 @@ SELECT * FROM tablename WHERE id=5;
 	
 # 示例：子查询
 	示例：查询出"研发部"所有员工的数据记录（ empTable \ deptTable ）
+	SELECT did FROM deptTable WHERE dname='研发部';
+	SELECT * FROM empTable WHERE deptId=10;
+	#合并后
+	SELECT * FROM empTable WHERE deptId=(SELECT did FROM deptTable WHERE dname='研发部');
 	
+# 示例： 查询出工资比TOM高的员工的所有信息
+	SELECT * FROM empTable WHERE salary>(SELECT salary FROM empTable WHERE ename='TOM');
 ```
 
 
