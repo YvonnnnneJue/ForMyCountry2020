@@ -210,7 +210,7 @@ SELECT * FROM tablename WHERE id=5;
 
 #### MySQL的列类型
 
-	##### 数值类型
+**数据类型**
 
 ​	整数数值类型：TINYINT(-128~127)、SMALLINT(2个字节，-32768~32767)、INT(4个字节，-2147483648~-2147483647)、BIGGINT(8个字节)
 
