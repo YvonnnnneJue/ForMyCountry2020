@@ -200,6 +200,35 @@ SELECT * FROM tablename WHERE id=5;
 	
 # 示例： 查询出工资比TOM高的员工的所有信息
 	SELECT * FROM empTable WHERE salary>(SELECT salary FROM empTable WHERE ename='TOM');
+	
+# 跨表/多表查询
+# 示例： 查询出每个员工的姓名及其所在部门的名称
+	SELECT ename, deptId, did, dname FROM  empTable, deptTable WHERE deptId=did;
+	SELECT ename, dname FROM empTable, deptTable WHERE deptId=did;
+#	以上为SQL-92跨表查询语法。
+
+#	SQL-99的4种跨表查询：
+#	1. 内连接查询 INNER JOIN
+	SELECT ename, dname FROM empTable INNER JOIN deptTable ON deptId=did;
+	
+#	2. 左外连接查询 LEFT [OUTER] JOIN：显示“左侧”所有数据记录   // OUTER可省略 
+	SELECT ename, dname FROM empTable LEFT JOIN deptTable ON deptId=did;
+	
+#	3. 右外连接查询 RIGHT OUTER JOIN：显示“右侧”所有数据记录
+	SELECT ename, dname FROM deptTable RIGHT JOIN empTable ON deptId=did;
+	
+#	4. 全接连查询 FULL JOIN： MySQL 不支持
+# 集合并
+	(SELECT ename FROM emp1) UNION (SELECT ename FROM emp2) #忽略重复的
+	(SELECT ename FROM emp1) UNION (SELECT ename FROM emp2) #复制所有
+	
+	
+	
+
+	
+
+
+
 ```
 
 
