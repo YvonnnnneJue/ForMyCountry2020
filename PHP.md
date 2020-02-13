@@ -134,6 +134,7 @@ PHP数据类型：https://www.php.net/manual/zh/ 官方文档
 - 赋值运算符： =       +=   -=   、=
 - 拼接运算符：.    .=
 - 三目运算符： ?:
+- 其他：->(  stu->name  等同js里的stu.name)    []      =>
 
 
 
@@ -170,3 +171,277 @@ PHP数据类型：https://www.php.net/manual/zh/ 官方文档
   按右移位  原数/(2<sup>n</sup>)
 
 - 三目运算符：表达式1 ? 表达式2 : 表达式3
+
+
+
+##### 逻辑结构
+
+- 顺序：输入 -> 计算 -> 输出
+
+- 条件
+
+  if
+
+  if..else
+
+  switch...case...
+
+- 循环
+
+  - while(循环判定=true){
+
+    ​	// 循环体
+
+    }
+
+  - do{
+
+    ​	循环体
+
+    }while(循环判断=true);
+
+    注意：while ... 先判定后执行，do...while...先执行再判定
+
+  - for(表达式1; 表达式2; 表达式3){
+
+    ​	// 循环体
+
+    }
+
+    注意关键字：break  continue
+
+```php
+<?php
+	# 判定金额是否足够
+  if($money >= $sum){
+    $change = $money - $sum;
+    echo "<br>总金额： $sum <br>应找零： $change";
+  }else{
+    echo "错误：已付金额不足!";
+  }
+
+	# 判定工资等级
+	$salary = 8000;
+	if($salary>=10000){
+    echo "白领级别";
+  }else if($salary >= 5000){
+    echo "蓝领级别";
+  }else{
+    echo "普通级别";
+  }
+
+	# 判断状态
+	$status = 3;
+	switch($status){
+    case 1:
+      echo "等待";
+      break;
+    case 2:
+      echo "响应";
+      break;
+    case 3:
+      echo "准备";
+      break;
+    case 4:
+      echo "发送";
+      break;
+    default:
+      echo "其他";
+  }
+
+	# while打印
+	$i = 0;
+	while($i<5){
+    echo "hello<br>";
+    $i++;
+  }
+
+	# 输出1+2+3……+100的总和
+	$sum = 0;
+	$i = 1;
+	while(i<=100){
+    $sum += $i;
+    $i++;
+  }
+	echo "1~100的累加和为： $sum";
+	echo "<hr>";
+	
+	# 输出1*2*3*……*10的乘积
+	$result = 1;
+	$i = 1;
+	while( $i<=10){
+    $result *= $i;
+    $i++;
+  }
+	echo "1~10的累乘积为： $result";
+
+	# 输出1/90+3/85+5/80+7/75+9/70的总和
+	$sum = 0;
+	$zi = 1;
+	$mu = 90;
+	while($zi<=9; ){
+    $sum += $zi/$mu;
+    $zi += 2;
+    $mu -= 5;
+  }
+	echo "总和为： $sum";
+
+	# 输出5行10列的※
+	# 思路1
+	$i = 0;
+	while($i<50){
+    echo '※';
+    $i++;
+    if($i%10===0){
+      echo '<br>';
+    }
+  }
+
+	# 思路2
+	$j=0;
+	while($j<5){
+      $i=0;
+      while($i<10){
+        echo '※';
+        $i++;
+      }
+      echo "<br>";
+    	$j++;
+  }
+
+	/* 输出
+			※
+			※※
+			※※※
+			※※※※
+			※※※※※
+	*/
+	$i = 1;
+	while($i<=5){
+    $j = 1;
+    while($j<=$i){
+      echo '※';
+      $j++;
+    }
+		echo '<br>';
+    $i++;
+  }
+
+	# 九九乘法表
+	$i = 1;
+	while($i<=9){
+    $j=1;
+    while($j<=$i){
+      echo "$i*$j=".$i*$j."&nbsp;&nbsp;";
+      $j++;
+    }
+    echo '<br>';
+    $i++;
+  }
+
+	# 输出5个hello;
+	$i;
+	do{
+    echo "hello<br>";
+    $i++;
+  }while($i<5);
+	
+	# 输出 5/10/15…/90/
+	for($i=5; $i<=90;$i+=5){
+    echo "$i/";
+  }
+
+	# 三位水仙花（如：253==2*2*2+5*5*5+3*3*3）
+	for($i=100; $i<=999; $i++){
+    $ge = $i%10;
+    $shi = $i/10%10;
+    $bai = $i/100%10;   // $bai = (int)($i/100);
+    if( $i === $ge*$ge*$ge + $shi*$shi*$shi + $bai*$bai*$bai ){
+      echo "$i/";
+    }
+  }
+
+	# 输出100以内所有的质数（质数只能被1和自身整除的数）
+	for($i=2; $i<100; $i++){
+    for($j=2; $j<$i; $j++){
+      if($i%$j === 0){
+        break;
+      }
+      if($j===$i){
+        echo "$i/";
+      }
+    }
+  }
+
+		
+?>
+```
+
+
+
+#### PHP的数据类型之复合类型 
+
+##### 数组
+
+$变量名=[值1,值2,……,值n];
+
+注意：数组变量不能echo，只能var_dump()。
+
+##### 数组类型
+
+1. 索引数组
+
+   $arr = ['aaa','bbb','ccc'];
+
+2. 关联数组
+
+   $arr = ['uid' => 123, 'name'='Y', 'age'=>50];
+
+```php
+<?php
+	$list = [35,3,75,78,23];
+	var_dump($list);
+	
+	# 获取数组长度
+	$arr = ['a','b','c','d'];
+	echo count($arr);
+
+	# 修改指定下标的元素
+	$arr[2] = 'e';
+
+	# 输出指定下标的元素
+	echo $arr[0];
+
+	# 循环输出数组
+	for($i=0; $i<count($arr);i++){
+    echo $arr[$i]."<br>";
+  }
+
+	# 数组添加新元素
+	$arr[count($arr)]="n";   // 可简写 $arr[]="n";
+	var_dump($arr);
+
+	# 新建空数组，添加元素，再使用for输出索引数组
+	$arr1 = [];
+	
+	$arr1[] = 'Tom';
+	$arr1[] = 'Kate';
+	$arr1[] = 'Jarry';
+
+	for($i = 0; $i< count($arr1); $i++){
+    echo $arr1[$i]."<br>";
+  }
+	
+	# 新建空数组，添加元素，再输出关联数组。无法使用for循环
+	$arr = ['uid' => 123, 'uname'='Y', 'age'=>50];
+	var_dump($arr);
+	echo $arr['age'];
+	#加新元素必须手工指定
+	$arr['addr'] = '中国';
+	echo "name：".$arr['uname']; //两种写法 “”外变量要+‘’
+	echo "name: $arr[uname]";		//两种写法 “”内变量要+‘’
+?>
+```
+
+
+
