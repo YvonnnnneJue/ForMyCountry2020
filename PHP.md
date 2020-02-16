@@ -209,6 +209,20 @@ PHP数据类型：https://www.php.net/manual/zh/ 官方文档
     }
 
     注意关键字：break  continue
+    
+  - foreach 只用于遍历数组
+  
+    foreach($数组名 as $元素变量名){
+  
+    ​	// 循环体
+  
+    }
+  
+    foreach( $数组名 as $下标变量名=>$元素变量名 ){
+  
+    ​	// 循环体
+  
+    }
 
 ```php
 <?php
@@ -373,6 +387,7 @@ PHP数据类型：https://www.php.net/manual/zh/ 官方文档
     }
   }
 
+
 		
 ?>
 ```
@@ -440,8 +455,77 @@ $变量名=[值1,值2,……,值n];
 	$arr['addr'] = '中国';
 	echo "name：".$arr['uname']; //两种写法 “”外变量要+‘’
 	echo "name: $arr[uname]";		//两种写法 “”内变量要+‘’
+
+	
+	#循环输出 二维数组
+	$user0=['uid'=>1, 'uname'=>'Tom'];
+  $user1=['uid'=>2, 'uname'=>'Johb'];
+  $user2=['uid'=>3, 'uname'=>'XiaoMing'];
+
+  $userList = [$user0,$user1];
+	$userList[] = $user2;
+	
+	for($i=0;$i<count($userList);$i++){
+    $arr = $userList[$i];
+    echo "$arr[uid] &nbsp;&nbsp";
+    echo "$arr[uname] &nbsp;&nbsp";
+  }
+
+	#foreach案例
+  # 案例1
+  $ageList = [20,32,5];
+	foreach($ageList as $a){
+    echo "$a<br>";
+  }
+  
+	# 案例2
+	$order=['oid'=>1, 'rcvName'=>'Tom'];
+	foreach($order as $key => $value ){
+    echo "$key - $value <br>" 
+  }
+	
 ?>
 ```
+
+
+
+##### PHP预定义数组：( 默认array(0){} )
+
+​	$_GET
+
+​	$_POST
+
+​	$_COOKIE
+
+​	$_FILES
+
+​	$_REQUEST：保存 客户端 提交给 服务器 的“请求”数据
+
+​	$_SESSION
+
+
+
+Web项目中，客户端（浏览器）如何给服务器传数据：
+
+​	http://168.x.x.x/login.php?uname=tom&upwd=123
+
+PHP服务器会自动把请求数据存储到$_REQUEST数组中：
+
+​	$_REQUEST['uname'] = 'tom';
+
+​	$_REQUEST['upwd'] = '123';
+
+程序员如何读取客户端提交的数据：
+
+​	echo $_REQUEST['uname'];
+
+​	echo $_REQUEST['upwd'];
+
+
+
+
+
+
 
 
 
