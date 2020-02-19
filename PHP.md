@@ -683,3 +683,89 @@ $变量名 = 函数名([值1, 值2, ...]);
 ?>
 ```
 
+```php
+<?php
+	/*
+		实现后台“用户删除”模块
+	*/  
+  //1. 接收客户端提交的请求数据uid, 检验用户输入
+  @$id = $_REQUEST['uid'];
+	if($id===null || $id===""){
+    die('uid 不能为空');
+  }
+  
+  //2. 连接数据库服务器
+  $conn = mysqli_connect("localhost","root","","databaseName",8080);
+  
+  //3. 向数据库服务器提交DELETE语句
+  $sql = "DELECT FROM databaseName_userTable WHERE uid='$id' ";
+	$result = mysqli_query($conn, $sql);
+  
+  //4. 输出执行结果： 删除成功 / 失败
+  if($result === false){
+    echo "删除失败<br>";
+    echo "请检查SQL语句： $sql";
+  }else{
+    echo "数据库删除成功。<br>";
+    // 获取INSERT / DELETE / UPDATE 语句影响的行数
+    $count = mysqli_affected_rows($conn);
+    echo "删除操作影响的行数：$count";
+  }
+?>
+```
+
+```sql
+SET NAMES UTF8;
+DROP DATABASE IF EXISTS databaseName;
+CREATE DATABASE databaseName CHARSET=UTF8;
+USE databaseName;
+```
+
+
+
+提取连接代码段：init.php
+
+```php
+<?php
+	/*
+		项目初始化页面，用于声明其它页面都需要的公共变量、函数
+  */
+    //比如： 2. 连接数据库服务器
+  	$conn = mysqli_connect("localhost","root","","databaseName",8080);
+  
+?>
+```
+
+引用连接代码：
+
+```php
+<?php
+	/*
+		实现后台“用户删除”模块
+	*/  
+  //1. 接收客户端提交的请求数据uid, 检验用户输入
+  @$id = $_REQUEST['uid'];
+	if($id===null || $id===""){
+    die('uid 不能为空');
+  }
+  
+  //2. 连接数据库服务器
+  require('init.php');
+  
+  //3. 向数据库服务器提交DELETE语句
+  $sql = "DELECT FROM databaseName_userTable WHERE uid='$id' ";
+	$result = mysqli_query($conn, $sql);
+  
+  //4. 输出执行结果： 删除成功 / 失败
+  if($result === false){
+    echo "删除失败<br>";
+    echo "请检查SQL语句： $sql";
+  }else{
+    echo "数据库删除成功。<br>";
+    // 获取INSERT / DELETE / UPDATE 语句影响的行数
+    $count = mysqli_affected_rows($conn);
+    echo "删除操作影响的行数：$count";
+  }
+?>
+```
+
