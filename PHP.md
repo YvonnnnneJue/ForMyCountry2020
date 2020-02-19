@@ -519,13 +519,167 @@ PHP服务器会自动把请求数据存储到$_REQUEST数组中：
 
 ​	echo $_REQUEST['uname'];
 
-​	echo $_REQUEST['upwd'];
+​	echo $_REQUEST['upwd']
+
+``` php
+<?php
+  /*
+  	练习：客户端访问star.php
+  	给服务器提交rows和cols表示要打印的星星行数和列数
+  	服务器端编写 star.php，读取客户端提交的rows和cols
+  */
+  $r = $_REQUEST['rows'];
+	$c = $_REQUEST['cols'];
+	
+	$r = (int)$r;
+	$c = (int)$c;
+
+	for( $i=0; $i<$r; $i++ ){
+    for( $j=0; $j<$c; $j++ ){
+      echo "※";
+    }
+    echo "<br>";
+  }
+
+	/*
+		练习：服务器端页面 max.php , 接收服务端提交的 n1/n2/n3 三个数中最大值
+	*/
+	$n1 = $_REQUEST['n1'];
+	$n2 = $_REQUEST['n2'];
+	$n3 = $_REQUEST['n3'];
+
+	$n1 = (int)$n1;
+	$n2 = (int)$n2;
+	$n3 = (int)$n3;
+	
+	$max = $n1;
+	if($n2>$max){
+    $max = $n2;
+  }
+	if($n3>$max){
+    $max = $n3;
+  }
+	echo "n1\n2\n3 三个数中最大的为：$max";
+	
+?>
+```
 
 
 
+##### php函数
+
+function 函数名(){
+
+​	// 函数体
+
+}
 
 
 
+function 函数名([参数名1,  参数2, ...]){
+
+​	// 函数体;
+
+​	return 值;
+
+}
+
+$变量名 = 函数名([值1, 值2, ...]);
+
+```php
+<?php
+  function funName(){
+  	echo "函数体";
+	}
+	funName();
+?>
+
+```
+
+参数类型：
+
+- 形参
+- 实参
 
 
+
+##### PHP预定义函数 —— 数据库相关
+
+提示：使用MySQLI 是改进版
+
+```php
+<?php
+	// 连接到数据库服务器
+  $conn = mysqli_connect("127.0.0.1","root","","jd",3306);
+	// 提交SQL命令给服务器执行
+	$sql = "INSERT INTO dept VALUES(50, 'Testing' )";
+	$result = mysqli_query($conn, $sql);
+
+	// 查看执行结果
+	if($result===false){
+    echo "SQL命令执行失败！请检查：$sql";
+  }else{
+    echo "SQL 执行成功";
+  }
+?>
+```
+
+
+
+服务器分：web服务器(PHP解释器 $_REQUEST['n'=>'x', 'p'=>'y']等)、文件服务器(html/css/js/jpg/php/jsp/aspx)、数据库服务器(tableName)
+
+客户端：浏览器（HTML/CSS/JS解释器）
+
+
+
+案例：创建“用户注册”模块
+
+1. 编写 user_add.php， 接收客户端提交的请求数据uname、upwd、email、phone，检验用户输入
+2. 连接数据库
+3. 向数据库服务器提交INSERT语句
+4. 输出执行结果：注册成功  / 失败
+
+```php
+<?php
+	/*
+	完成“用户注册”功能点
+	*/ 
+	// 1. 编写 user_add.php， 接收客户端提交的请求数据uname、upwd、email、phone，检验用户输入
+	@$name = $_REQUEST['uname'];    // 增加@：不显示错误警告
+	if($name===null || $name===""){
+		die('用户名不为空'); // 终止当前页面执行
+	}
+	@$pwd = $_REQUEST['upwd'];
+	if($pwd ===null || $pwd ===""){
+		die('密码不为空'); // 终止当前页面执行
+	}
+	@$email = $_REQUEST['email'];
+	if($email===null || $email===""){
+		die('邮箱不为空'); // 终止当前页面执行
+	}
+	@$phone = $_REQUEST['phone'];
+	if($phone===null || $phone===""){
+		die('手机号码不为空'); // 终止当前页面执行
+	}
+	echo "<hr>";
+
+	// 2. 连接数据库
+	$conn = mysqli_connect('localhost',"root","","user", 8080); // 服务器地址，用户名，密码，数据库名称，端口号
+
+	// 3. 向数据库服务器提交INSERT语句
+	$sql = "INSERT INTO userTable VALUES('$name','$pwd','$email','$phone') ";
+	$result = mysqli_query($conn, $sql);
+
+	// 4. 输出执行结果：注册成功  / 失败
+	if($result === false){
+		echo "失败：$sql";
+	}else{
+		echo "成功";
+		$i = mysqli_insert_id($conn);
+		echo "新用户在数据库中的编号为:$i";  // $i 为自增编号，前提必须有 主键
+	}
+
+
+?>
+```
 
