@@ -769,3 +769,126 @@ USE databaseName;
 ?>
 ```
 
+```php
+<?php
+	/*
+		实现后台“用户删除”模块
+	*/  
+  //1. 接收客户端提交的请求数据uid, 检验用户输入
+  @$id=$_REQUEST['uid'];
+	if($id===null || $id===""){
+    die('uid 不能为空');
+  }
+  @$email = $_REQUEST['email'];
+	if($email===null || $email===""){
+    die('uid 不能为空');
+  }
+   @$phone = $_REQUEST['phone'];
+	if($id===null || $id===""){
+    die('phone 不能为空');
+  }
+  //2. 连接数据库服务器
+  require('init.php');
+  
+  //3. 向数据库服务器提交UPDATE语句
+  $sql = "UPDATE userTable SET email='$email',phone='$phone' WHERE uid='$id'";
+	$result = mysqli_query($conn, $sql);
+  
+  //4. 输出执行结果： 删除成功 / 失败
+  if($result === false){
+    echo "更新失败<br>";
+    echo "请检查SQL语句： $sql";
+  }else{
+    echo "数据库更新成功。<br>";
+    // 获取INSERT / DELETE / UPDATE 语句影响的行数
+    $count = mysqli_affected_rows($conn);
+    echo "更新操作影响的行数：$count";
+  }
+?>
+```
+
+```php
+<?php
+	/*
+  	使用“用户登录”模块
+  */
+  // 1. 编写user_login.php, 接收客户端提交的请求数据uname、upwd，检验用户输入
+  @$n = $_REQUEST['uname'];
+	if($n === null || $n===""){
+    die('uname 不能为空');
+  }
+	@$p = $_REQUEST['upwd'];
+	if($p === null || $p===""){
+    die('upwd 不能为空');
+  }
+  
+  // 2. 连接数据库服务器
+  include('init.php');    // require()和include()功能同等。
+
+  // 3. 向数据库服务器提交SELECT语句
+  $sql = "SELECT * FROM xz_user WHERE uname='$n' AND upwd='$p'";
+	$result = mysqli_query($conn, $sql);  
+
+  // 4. 输出执行结果：登录成功/失败
+  if($result===false){
+    echo "数据库查询失败<br>";
+    echo "请检查SQL语句：$sql";
+  }else{
+    // SQL语句执行成果，语法没有错误
+    // 查看结果集中是否有数据
+    $row = mysqli_fetch_assoc($result);
+    if($row===null){ // 没有数据
+      echo "登录失败，用户名或密码错误";
+    }else{ // 有一行数据
+      echo "登录成功";
+    }
+  }
+  
+?>
+```
+
+SQL语句的分类：
+
+DDL：Data Define Language，数据定义语言——定义列
+
+​			CREATE / DROP / ALTER / TRUNCATE
+
+DML：Data Manipulate Languge，数据操作语言 —— 操作行
+
+​			INSERT / DELETE / UPDATE
+
+DQL：Data Query Language，数据查询语言 —— 不影响数据
+
+​			SELECT 
+
+DCL：Data Control Language，数据控制语言 —— 控制权限
+
+​			GRANT / REVOKE
+
+
+
+Tips: mysqli_query($conn, $sql)的返回值类型：
+
+1. DML：增删改，执行失败返回false， 成功返回true
+
+2. DQL：查，执行失败返回false，成功返回查询结果集对象，可能有0/1/N行数据；从其中获取一行数据可以使用：
+
+   $row=mysqli_fetch_row($result);  抓取一个索引数组或null
+
+   $row=mysqli_fetch_assoc($result); 抓取一个关联数组或null
+
+   从其中获取所有记录行可以使用：
+
+   $rowList=mysqli_fetch_all($result, MYSQLI_ASSOC); 抓取一个二维数组 
+
+   等同：$rowList=mysqli_fetch_all($result, 1); 
+
+   
+
+   
+
+   
+
+   
+
+   
