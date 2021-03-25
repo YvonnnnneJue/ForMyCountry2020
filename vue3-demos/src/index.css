@@ -1,0 +1,17 @@
+#app {
+  width: 100%;
+  height: 100vh;
+  background-color: #ecf5ff;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+/* init */
+ul {
+  padding: 0;
+}
+li {
+  list-style: none;
+}
